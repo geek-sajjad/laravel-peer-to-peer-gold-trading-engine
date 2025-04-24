@@ -9,7 +9,7 @@
 
 ## How to start the project using docker?
 
-First make sure the Docker is installed, then run ./docker/start.sh
+First make sure the Docker is installed, then run `./docker/start.sh`
 this will start all the required commands.
 
 ## About Laravel

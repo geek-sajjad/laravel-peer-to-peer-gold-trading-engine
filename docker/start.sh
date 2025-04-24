@@ -3,12 +3,12 @@
 # Exit on error
 set -e
 
-echo "🚀 Building containers..."
-docker compose up -d --build
-
-
 echo "🧹 Coping .env file ..."
 cp .env.example .env
+
+
+echo "🚀 Building containers..."
+docker compose up -d --build
 
 echo "🔐 Running migrations..."
 docker exec -it laravel-app php artisan migrate --force || true

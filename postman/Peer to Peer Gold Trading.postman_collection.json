@@ -1,0 +1,542 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Peer to Peer Gold Trading API",
+		"description": "A collection of API endpoints for a peer-to-peer gold trading platform. Includes authentication, order management, transaction retrieval, and balance checking. All requests require Bearer token authentication unless specified.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"description": "Endpoints for user registration and login.",
+			"item": [
+				{
+					"name": "Register User",
+					"description": "Register a new user with name, email, and password.",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ali\",\n    \"email\": \"email3@gmail.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "register"]
+						}
+					},
+					"response": [
+						{
+							"name": "User Registered",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"ali\",\n    \"email\": \"email3@gmail.com\",\n    \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/register",
+									"host": ["{{base_url}}"],
+									"path": ["api", "register"]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"body": "{\n    \"user\": {\n        \"name\": \"ali\",\n        \"email\": \"email3@gmail.com\",\n        \"updated_at\": \"2025-04-22T10:03:25.000000Z\",\n        \"created_at\": \"2025-04-22T10:03:25.000000Z\",\n        \"id\": 1\n    },\n    \"token\": \"1|m7BKcwV4jhtjDQRP8pwiMnVORuj2TntDOxOjlkS9b669a83a\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Login User",
+					"description": "Authenticate a user and retrieve an access token.",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"sajad@gmail.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "login"]
+						}
+					},
+					"response": [
+						{
+							"name": "User Logged In",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"sajad@gmail.com\",\n    \"password\": \"password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/login",
+									"host": ["{{base_url}}"],
+									"path": ["api", "login"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"body": "{\n    \"user\": {\n        \"id\": 2,\n        \"name\": \"sajad\",\n        \"email\": \"sajad@gmail.com\",\n        \"email_verified_at\": null,\n        \"created_at\": \"2025-04-22T10:04:26.000000Z\",\n        \"updated_at\": \"2025-04-22T10:04:26.000000Z\",\n        \"gold_balance\": \"3.379\",\n        \"irr_balance\": \"1000000000.00\"\n    },\n    \"token\": \"2|04y4T1K9ZvTCcOeoXnjBMSPiYQOT1LV3kJJzykKm23b1d668\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"description": "Endpoints for managing gold trading orders (create, list, retrieve, cancel).",
+			"item": [
+				{
+					"name": "Create Order",
+					"description": "Create a new buy or sell order for gold. Requires authentication.",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_ali}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"sell\",\n    \"quantity_gram\": 0.6,\n    \"price\": 1000000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "orders"]
+						}
+					},
+					"response": [
+						{
+							"name": "Order Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"sell\",\n    \"quantity_gram\": 0.6,\n    \"price\": 1000000\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/orders",
+									"host": ["{{base_url}}"],
+									"path": ["api", "orders"]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"body": "{\n    \"type\": \"sell\",\n    \"user_id\": 2,\n    \"status\": \"open\",\n    \"quantity\": \"0.600\",\n    \"remaining_quantity\": \"0.600\",\n    \"filled_quantity\": \"0.000\",\n    \"price\": \"1000000.00\",\n    \"updated_at\": \"2025-04-23T15:16:44.000000Z\",\n    \"created_at\": \"2025-04-23T15:16:44.000000Z\",\n    \"id\": 137\n}"
+						}
+					]
+				},
+				{
+					"name": "List Orders",
+					"description": "Retrieve a paginated list of orders. Requires authentication.",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_ali}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "orders"]
+						}
+					},
+					"response": [
+						{
+							"name": "Orders Listed",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/orders",
+									"host": ["{{base_url}}"],
+									"path": ["api", "orders"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"body": "{\n    \"current_page\": 1,\n    \"data\": [\n        {\n            \"id\": 126,\n            \"user_id\": 2,\n            \"type\": \"sell\",\n            \"quantity\": \"2.000\",\n            \"remaining_quantity\": \"0.000\",\n            \"filled_quantity\": \"2.000\",\n            \"price\": \"93442500.00\",\n            \"status\": \"filled\",\n            \"created_at\": \"2025-04-23T11:21:56.000000Z\",\n            \"updated_at\": \"2025-04-23T11:21:57.000000Z\"\n        },\n        {\n            \"id\": 127,\n            \"user_id\": 2,\n            \"type\": \"sell\",\n            \"quantity\": \"2.000\",\n            \"remaining_quantity\": \"0.000\",\n            \"filled_quantity\": \"2.000\",\n            \"price\": \"93442500.00\",\n            \"status\": \"filled\",\n            \"created_at\": \"2025-04-23T11:21:56.000000Z\",\n            \"updated_at\": \"2025-04-23T11:21:57.000000Z\"\n        }\n    ],\n    \"first_page_url\": \"{{base_url}}/api/orders?page=1\",\n    \"from\": 1,\n    \"last_page\": 1,\n    \"last_page_url\": \"{{base_url}}/api/orders?page=1\",\n    \"links\": [\n        {\n            \"url\": null,\n            \"label\": \"&laquo; Previous\",\n            \"active\": false\n        },\n        {\n            \"url\": \"{{base_url}}/api/orders?page=1\",\n            \"label\": \"1\",\n            \"active\": true\n        },\n        {\n            \"url\": null,\n            \"label\": \"Next &raquo;\",\n            \"active\": false\n        }\n    ],\n    \"next_page_url\": null,\n    \"path\": \"{{base_url}}/api/orders\",\n    \"per_page\": 10,\n    \"prev_page_url\": null,\n    \"to\": 5,\n    \"total\": 5\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Order Details",
+					"description": "Retrieve details of a specific order, including associated transactions. Requires authentication.",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_ali}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders/130",
+							"host": ["{{base_url}}"],
+							"path": ["api", "orders", "130"]
+						}
+					},
+					"response": [
+						{
+							"name": "Order Details Retrieved",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/orders/130",
+									"host": ["{{base_url}}"],
+									"path": ["api", "orders", "130"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"body": "{\n    \"order\": {\n        \"id\": 130,\n        \"type\": \"sell\",\n        \"quantity\": \"1.900\",\n        \"remaining_quantity\": \"0.000\",\n        \"filled_quantity\": \"0.100\",\n        \"price\": \"93442500.00\",\n        \"status\": \"cancelled\",\n        \"created_at\": \"2025-04-23T11:22:26+00:00\"\n    },\n    \"transactions\": [\n        {\n            \"id\": 66,\n            \"quantity\": \"0.100\",\n            \"price\": \"93442500.00\",\n            \"status\": \"completed\",\n            \"fee\": \"500000.00\",\n            \"created_at\": \"2025-04-23T11:22:28+00:00\",\n            \"type\": \"sell\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Cancel Order",
+					"description": "Cancel an existing order. Requires authentication.",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_ali}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders/130",
+							"host": ["{{base_url}}"],
+							"path": ["api", "orders", "130"]
+						}
+					},
+					"response": [
+						{
+							"name": "Order Cancelled",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/orders/130",
+									"host": ["{{base_url}}"],
+									"path": ["api", "orders", "130"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"body": "{\n    \"message\": \"Order canceled successfully\",\n    \"order\": {\n        \"id\": 130,\n        \"status\": \"cancelled\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"description": "Endpoints for retrieving transaction history.",
+			"item": [
+				{
+					"name": "List Transactions",
+					"description": "Retrieve a list of transactions. Requires authentication.",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_ali}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/transactions",
+							"host": ["{{base_url}}"],
+							"path": ["api", "transactions"]
+						}
+					},
+					"response": [
+						{
+							"name": "Transactions Listed",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/transactions",
+									"host": ["{{base_url}}"],
+									"path": ["api", "transactions"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"body": "[\n    {\n        \"id\": 74,\n        \"order_id\": 135,\n        \"quantity\": \"0.600\",\n        \"price\": \"1000000.00\",\n        \"fee\": \"500000.00\",\n        \"status\": \"completed\",\n        \"created_at\": \"2025-04-23T14:59:31.000000Z\",\n        \"updated_at\": \"2025-04-23T14:59:31.000000Z\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Balances",
+			"description": "Endpoints for checking user balances.",
+			"item": [
+				{
+					"name": "Get Balances",
+					"description": "Retrieve available and frozen gold and IRR balances. Requires authentication.",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_ali}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/balances",
+							"host": ["{{base_url}}"],
+							"path": ["api", "balances"]
+						}
+					},
+					"response": [
+						{
+							"name": "Balances Retrieved",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/balances",
+									"host": ["{{base_url}}"],
+									"path": ["api", "balances"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"body": "{\n    \"balances\": {\n        \"available_gold_balance\": \"70.900\",\n        \"available_irr_balance\": \"301865794741.53\",\n        \"frozen_gold_balance\": \"0.500\",\n        \"frozen_irr_balance\": \"0.00\"\n    }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:8000",
+			"type": "string",
+			"description": "Base URL for the API (e.g., localhost:8000 for local development)."
+		},
+		{
+			"key": "token_ali",
+			"value": "2|TJ0iNMLSI2ZvCLuh0jABv3ZY6U2MWZL3Yo4zpnSs5cc979af",
+			"type": "string",
+			"description": "Bearer token for user 'ali'."
+		},
+		{
+			"key": "token_sajad",
+			"value": "1|bLQlZxXE4qn4QpOLzOqehalnqALuKV59qj5GOjJUea5f93bd",
+			"type": "string",
+			"description": "Bearer token for user 'sajad'."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		}
+	]
+}

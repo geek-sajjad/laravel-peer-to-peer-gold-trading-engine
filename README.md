@@ -11,3 +11,7 @@
 
 First make sure the Docker is installed, then run `./docker/start.sh`
 this will start all the required commands.
+
+## PostMan documents
+
+You can find the postman documents under the `/postman` directory.

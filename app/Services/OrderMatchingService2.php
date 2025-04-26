@@ -24,7 +24,6 @@ class OrderMatchingService2
             ->whereIn('status', ['open', 'partially_filled'])
             ->orderByDesc('price')
             ->orderBy('created_at')
-//          ->lockForUpdate()
             ->get();
 
         $sellOrders = Order::where('type', 'sell')
@@ -32,7 +31,6 @@ class OrderMatchingService2
             ->whereIn('status', ['open', 'partially_filled'])
             ->orderBy('price')
             ->orderBy('created_at')
-//          ->lockForUpdate()
             ->get();
 
 
@@ -50,7 +48,7 @@ class OrderMatchingService2
                     break; // No more matching possible
                 }
 
-//
+
                 if ($sellOrder->remaining_quantity <= 0) {
                     Log::info('$sellOrder->remaining_quantity is zero for buyOrderId: ' . $buyOrder->id . ' and for sellOrderId: ' . $sellOrder->id);
                     continue;
@@ -95,11 +93,6 @@ class OrderMatchingService2
                         ]);
 
 
-//                        $this->updateOrder($buyOrder, $matchQuantity);
-//                        $this->updateOrder($sellOrder, $matchQuantity);
-//                        $this->updateUserBalance($buyOrder, $matchQuantity, $matchPrice, $buyerFee);
-//                        $this->updateUserBalance($sellOrder, $matchQuantity, $matchPrice, $sellerFee);
-
                         // Update orders
                         $this->updateOrder($lockedBuyOrder, $matchQuantity);
                         $this->updateOrder($lockedSellOrder, $matchQuantity);
@@ -120,26 +113,12 @@ class OrderMatchingService2
 
             }
         }
-        //              if (!empty($matches)) {
-//                  DB::table('order_matches')->insert($matches);
-//              }
 
 
     }
 
     private function canMatch(Order $buyOrder, Order $sellOrder): bool
     {
-//        if ($buyOrder->status == "filled" || $sellOrder->status == "filled") {
-//            throw new \Exception("order status must be open");
-//        }
-//
-//        if ($buyOrder->status == "cancelled" || $sellOrder->status == "cancelled") {
-//            throw new \Exception("order status must be open");
-//        }
-//
-//        if ($buyOrder->remaining_quantity <= 0 || $sellOrder->remaining_quantity <= 0) {
-//            throw new \Exception("order quantity must be not be zero");
-//        }
 
 
         return
@@ -178,18 +157,16 @@ class OrderMatchingService2
         if ($order->type == 'buy' && $userFrozenIrrBalance < $matchedQuantity * $matchedPrice) {
             throw new \Exception("Insufficient IRR balance");
         }
-//TODO:use locking
-//        $order->user()->lockForUpdate()->first()
         if ($order->type == 'sell') {
             $order->user->frozen_gold_balance -= $matchedQuantity;
             $order->user->available_irr_balance += ($matchedQuantity * $matchedPrice) - $fee['irrFee'];
-//
+
         }
 
         if ($order->type == 'buy') {
             $order->user->frozen_irr_balance -= $matchedQuantity * $matchedPrice;
             $order->user->available_gold_balance += $matchedQuantity - $fee['goldFee'];
-//
+
         }
 
         $order->user->save();
